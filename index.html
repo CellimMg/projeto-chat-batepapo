@@ -14,9 +14,35 @@
 </head>
 
 <body>
+
+    <div class="body-nav">
+        <div class="side-left-nav" onclick="closeMenuLateral()"></div>
+        <div class="side-right-nav">
+            <div class="visibilidade-container">
+                <div>Escolha a visibilidade da mensagem:</div>
+                <div onclick="onTapVisibilidade(this)" class="visibilidade"><img
+                        src="./assets/images/public-message.svg"
+                        alt="Ícone de mensagem publica"><span>Público</span><img src="./assets/images/check.svg"
+                        alt="Icone de seleçao"></div>
+                <div onclick="onTapVisibilidade(this)" class="visibilidade"><img
+                        src="./assets/images/private-message.svg"
+                        alt="Ícone de mensagem reservada"><span>Reservadamente</span><img style="visibility: visible"
+                        src="./assets/images/check.svg" alt="Icone de seleçao"></div>
+            </div>
+            <div class="usuario-container">
+                <div>Escolha um contato para enviar mensagens:</div>
+                <div onclick="onTapUsuario(this)" class="usuario"><img src="./assets/images/perfis.svg"
+                        alt="Ícone de Mensagem para todos"><span>Todos</span><img style="visibility: visible"
+                        src="./assets/images/check.svg" alt="Icone de seleçao">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <header>
         <img src="./assets/images/logo.svg" alt="Logo da aplicação escrito Bate-Papo Uol" height="53px" width="">
-        <img src="./assets/images/icon-perfil.svg" alt="Ícone do Menu" height="31px" width="42px">
+        <button onclick="openMenuLateral()"><img src="./assets/images/icon-perfil.svg" alt="Ícone do Menu" height="31px"
+                width="42px"></button>
     </header>
 
     <main>
@@ -30,6 +56,8 @@
                     height="26px" width="26px"></button>
         </form>
     </footer>
+
+
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./script.js"></script>
