@@ -8,16 +8,30 @@
     <link rel="stylesheet" href="reset.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
     <title>Bate-Papo</title>
 </head>
 
 <body>
+    <header>
+        <img src="./assets/images/logo.svg" alt="Logo da aplicação escrito Bate-Papo Uol" height="53px" width="">
+        <img src="./assets/images/icon-perfil.svg" alt="Ícone do Menu" height="31px" width="42px">
+    </header>
 
+    <main>
+        <!-- SERÁ POPULADO PELO JS -->
+    </main>
 
+    <footer>
+        <form action="javascript:sendMensagem(mensagem.value)">
+            <input type="text" name="mensagem" id="mensagem" placeholder="Escreva aqui...">
+            <button type="submit"><img src="./assets/images/icon-enviar-mensagem.svg" alt="Botão de envio da mensagem"
+                    height="26px" width="26px"></button>
+        </form>
+    </footer>
 
-
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./script.js"></script>
 </body>
 
