@@ -4,11 +4,13 @@ const RECURSO_PARTICIPANTES = `${URL}/participants`;
 const RECURSO_STATUS = `${URL}/status`;
 const RECURSO_MENSAGENS = `${URL}/messages`;
 
+let intervalStatus, intervalMessages, intervalParticipants;
+
 const currentUser = {
     nome: null
 };
 
-let visibilidadeDeEnvio = "message"; //message = publica e private_message = privada
+let visibilidadeDeEnvio = "Público"; //message = Público e private_message = Reservado
 let usuario = "Todos";
 
 /*
@@ -30,14 +32,59 @@ let usuarios = [];
 
 
 
-setup();
-
-function changeScreen() { }
-
-function setup() {
-    const nome = prompt("nome");
-    login(nome);
+function changeToLogin() {
+    document.querySelector("body").innerHTML = `<form class="login" action="javascript:login(nome.value)">
+        <img src="./assets/images/logo.svg" alt="Logo da aplicação escrito Bate-Papo Uol" height="92px" width="130px">
+        <input type="text" name="nome" id="nome" placeholder="Digite seu nome">
+        <button type="submit">Entrar</button>
+    </form>`;
 }
+
+
+function changeToChat() {
+    document.querySelector("body").innerHTML = `<div class="body-nav">
+        <div class="side-left-nav" onclick="closeMenuLateral()"></div>
+        <div class="side-right-nav">
+            <div class="visibilidade-container">
+                <div>Escolha a visibilidade da mensagem:</div>
+                <div onclick="onTapVisibilidade(this)" class="visibilidade"><img
+                        src="./assets/images/public-message.svg"
+                        alt="Ícone de mensagem publica"><span>Público</span><img style="visibility: visible"
+                        src="./assets/images/check.svg" alt="Icone de seleçao"></div>
+                <div onclick="onTapVisibilidade(this)" class="visibilidade"><img
+                        src="./assets/images/private-message.svg"
+                        alt="Ícone de mensagem reservada"><span>Reservadamente</span><img
+                        src="./assets/images/check.svg" alt="Icone de seleçao"></div>
+            </div>
+            <div class="usuario-container">
+                <div>Escolha um contato para enviar mensagens:</div>
+                <div onclick="onTapUsuario(this)" class="usuario"><img src="./assets/images/perfis.svg"
+                        alt="Ícone de Mensagem para todos"><span>Todos</span><img style="visibility: visible"
+                        src="./assets/images/check.svg" alt="Icone de seleçao">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <img src="./assets/images/logo.svg" alt="Logo da aplicação escrito Bate-Papo Uol" height="53px" width="">
+        <button onclick="openMenuLateral()"><img src="./assets/images/icon-perfil.svg" alt="Ícone do Menu" height="31px"
+                width="42px"></button>
+    </header>
+
+    <main>
+        
+    </main>
+
+    <footer>
+        <form action="javascript:sendMensagem(mensagem.value)">
+            <input type="text" name="mensagem" id="mensagem" placeholder="Escreva aqui...">
+            <button type="submit"><img src="./assets/images/icon-enviar-mensagem.svg" alt="Botão de envio da mensagem"
+                    height="26px" width="26px"></button>
+        </form>
+    </footer>`;
+}
+
 
 //FUNCOES REFERENTES À TROCA DE MENSAGENS
 function getMensagens() {
@@ -59,14 +106,13 @@ function getMensagens() {
     promise.catch(handleError);
 }
 
-function sendMensagem(mensagemTexto, destinatario = "Todos", tipo = "message") {
+function sendMensagem(mensagemTexto) {
     const corpoReq = {
         from: currentUser.nome,
-        to: destinatario,
+        to: usuario,
         text: mensagemTexto,
-        type: tipo
+        type: visibilidadeDeEnvio == "Público" ? "message" : "private_message"
     };
-
     if (mensagemTexto != "") {
         const promise = axios.post(RECURSO_MENSAGENS, corpoReq);
         promise.then((_response) => {
@@ -84,29 +130,34 @@ function login(nome) {
     };
     const promise = axios.post(RECURSO_PARTICIPANTES, corpoReq);
     promise.then((_response) => {
+        changeToChat();
         currentUser.nome = nome;
         getMensagens();
         sincronizarUsuarios();
         manterAtualizado();
     });
     promise.catch((_error) => {
-        setup();
+        alert("Este nome de usuário não está disponível, tente novamente em alguns instantes ou escolha outro nome de usuário!");
     });
 }
 
 //faz o setup das atualizacoes de mensagens e usuarios conectados
 function manterAtualizado() {
-    setInterval(getMensagens, 3000);
-    setInterval(() => manterConexao(currentUser.nome), 5000);
-    setInterval(sincronizarUsuarios, 10000);
+    intervalMessages = setInterval(getMensagens, 3000);
+    intervalStatus = setInterval(() => manterConexao(currentUser.nome), 5000);
+    intervalParticipants = setInterval(sincronizarUsuarios, 10000);
 }
 
 
 function sincronizarUsuarios() {
     const promise = axios.get(RECURSO_PARTICIPANTES);
     promise.then((response) => {
-        limparDivUsuarios();
+
         usuarios = response.data.map(construtorUsuario);
+        if (!usuarios.some(e => e.nome === usuario)) {
+            usuario = 'Todos';
+        }
+        limparDivUsuarios(usuarios);
         usuarios.map(construirUsuarios);
     });
     promise.catch(handleError);
@@ -121,8 +172,11 @@ function manterConexao(nome) {
 }
 
 //FUNCOES UTILITÁRIAS
-function handleError(error) {
-    console.log(error.response);
+function handleError(_error) {
+    confirm("Algo deu errado, por favor, faça seu login novamente!");
+    changeToLogin();
+    limparDados();
+    login();
 }
 
 function construtorMensagem(mensagem) {
@@ -141,6 +195,17 @@ function construtorUsuario(usuario) {
         nome: usuario.name
     }
     return usuarioObj;
+}
+
+function limparDados() {
+    clearInterval(intervalMessages);
+    clearInterval(intervalParticipants);
+    clearInterval(intervalStatus);
+    usuarios = [];
+    mensagens = [];
+    currentUser = { nome: null };
+    visibilidadeDeEnvio = "Público";
+    usuario = "Todos";
 }
 
 //Transforma 2 objetos em String e compara
@@ -162,6 +227,9 @@ function construirMensagem(mensagem) {
         case "message":
             inserirMensagemTexto(mensagem);
             break;
+        case "private_message":
+            inserirMensagemTexto(mensagem);
+            break;
         default:
             break;
     }
@@ -177,11 +245,11 @@ function construirUsuarios(usuario) {
     }
 }
 
-function inserirUsuario(usuario) {
+function inserirUsuario(usuarioToInsert) {
     const divUsuarios = document.querySelector(".usuario-container");
     const divUsuario = `<div onclick="onTapUsuario(this)" class="usuario"><img src="./assets/images/perfis.svg"
-                        alt="Ícone de Mensagem para todos"><span>${usuario.nome}</span><img
-                        src="./assets/images/check.svg" alt="Icone de seleçao">
+                        alt="Ícone de Mensagem para todos"><span>${usuarioToInsert.nome}</span><img
+                        src="./assets/images/check.svg" alt="Icone de seleçao" style="visibility: ${usuario == usuarioToInsert.nome ? 'visible' : 'hidden'}">
                 </div>`;
     divUsuarios.innerHTML += divUsuario;
 }
@@ -191,11 +259,11 @@ function limparDivPrincipal() {
     divMain.innerHTML = "";
 }
 
-function limparDivUsuarios() {
+function limparDivUsuarios(usuarios) {
     const divUsuarios = document.querySelector(".usuario-container");
     divUsuarios.innerHTML = `<div>Escolha um contato para enviar mensagens:</div>
                 <div onclick="onTapUsuario(this)" class="usuario"><img src="./assets/images/perfis.svg"
-                        alt="Ícone de Mensagem para todos"><span>Todos</span><img style="visibility: visible"
+                        alt="Ícone de Mensagem para todos"><span>Todos</span><img style="visibility: ${usuarios.some(e => e.nome === usuario) ? 'hidden' : 'visible'}"
                         src="./assets/images/check.svg" alt="Icone de seleçao">
                 </div>`;
 }
@@ -211,9 +279,8 @@ function inserirMensagemStatus(mensagem) {
 function inserirMensagemTexto(mensagem) {
     const divMain = document.querySelector("main");
     let divMensagemTexto;
-
-    if (mensagem.to == currentUser.nome || mensagem.to == "Todos") {
-        if (mensagem.to == "Todos") { //é privada
+    if (mensagem.to == currentUser.nome || mensagem.to == "Todos" || mensagem.from == currentUser.nome) {
+        if (mensagem.type == "message") {
             divMensagemTexto = `<div class="mensagem">
             <p><span class="horario">(${mensagem.time})</span> <span class="pessoa">${mensagem.from}</span> para <span class="pessoa">${mensagem.to}:</span> ${mensagem.text}</p>
         </div>`;

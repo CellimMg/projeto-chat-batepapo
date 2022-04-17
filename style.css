@@ -10,6 +10,58 @@ body {
     background-color: #F3F3F3;
 }
 
+.login {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.login img {
+    margin-top: 72px;
+}
+
+.login input[type=text] {
+    height: 54px;
+    width: 260px;
+    border: solid 1px #D7D7D7;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 94px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-family: 'Roboto',
+        'sans-serif';
+    font-weight: 400;
+    font-size: 18px;
+    font-style: normal;
+}
+
+.login ::placeholder {
+    font-family: 'Roboto',
+        'sans-serif';
+    font-weight: 400;
+    color: #AEAEAE;
+    font-size: 18px;
+    font-style: normal;
+}
+
+.login button {
+    width: 109px;
+    height: 45px;
+    background-color: #E7E7E7;
+    border-radius: 9px;
+    font-size: 19px;
+    align-content: center;
+    color: #696969;
+    border: none;
+    font-weight: 400;
+    font-family: 'Roboto',
+        sans-serif;
+}
+
 .body-nav {
     display: flex;
     z-index: 1;
@@ -63,6 +115,11 @@ body {
     box-sizing: border-box;
 }
 
+.usuario:hover,
+.visibilidade:hover {
+    cursor: pointer;
+    background-color: #AAAAAA;
+}
 
 .visibilidade-container,
 .usuario-container {
@@ -90,6 +147,11 @@ header {
     align-items: center;
     justify-content: space-between;
     padding: 0 22px;
+}
+
+header button {
+    border: none;
+    background-color: white;
 }
 
 main {
@@ -168,7 +230,7 @@ footer button:hover {
     cursor: pointer;
 }
 
-::placeholder {
+footer ::placeholder {
     font-style: italic;
     size: 18px;
     color: #000000;
