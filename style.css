@@ -1,0 +1,242 @@
+html,
+body {
+    font-family: 'Roboto',
+        sans-serif;
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    background-color: #F3F3F3;
+}
+
+.login {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.login img {
+    margin-top: 72px;
+}
+
+.login input[type=text] {
+    height: 54px;
+    width: 260px;
+    border: solid 1px #D7D7D7;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 94px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-family: 'Roboto',
+        'sans-serif';
+    font-weight: 400;
+    font-size: 18px;
+    font-style: normal;
+}
+
+.login ::placeholder {
+    font-family: 'Roboto',
+        'sans-serif';
+    font-weight: 400;
+    color: #AEAEAE;
+    font-size: 18px;
+    font-style: normal;
+}
+
+.login button {
+    width: 109px;
+    height: 45px;
+    background-color: #E7E7E7;
+    border-radius: 9px;
+    font-size: 19px;
+    align-content: center;
+    color: #696969;
+    border: none;
+    font-weight: 400;
+    font-family: 'Roboto',
+        sans-serif;
+}
+
+.body-nav {
+    display: flex;
+    z-index: 1;
+    position: fixed;
+    visibility: hidden;
+    width: 100%;
+    height: 100%;
+    background-color: #00000000;
+    transition: visibility .5s, background-color .5s;
+}
+
+.side-left-nav {
+    position: absolute;
+    left: 0;
+    width: 30%;
+    height: 100%;
+}
+
+.side-right-nav {
+    position: absolute;
+    right: -70%;
+    width: 70%;
+    height: 100%;
+    background-color: #FFFFFF;
+    transition: right 0.5s;
+    overflow-y: scroll;
+}
+
+.usuario img:first-child,
+.visibilidade img:first-child {
+    height: 20px;
+    width: 20px;
+    margin-right: 8px;
+}
+
+.usuario img:last-child,
+.visibilidade img:last-child {
+    height: 20px;
+    width: 20px;
+    margin-left: auto;
+    visibility: hidden;
+}
+
+.usuario,
+.visibilidade {
+    width: 100%;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    box-sizing: border-box;
+}
+
+.usuario:hover,
+.visibilidade:hover {
+    cursor: pointer;
+    background-color: #AAAAAA;
+}
+
+.visibilidade-container,
+.usuario-container {
+    font-size: 16px;
+}
+
+.visibilidade-container div:first-child,
+.usuario-container div:first-child {
+    width: 100%;
+    height: 83px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 700;
+}
+
+
+header {
+    box-sizing: border-box;
+    width: 100%;
+    height: 80px;
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 22px;
+}
+
+header button {
+    border: none;
+    background-color: white;
+}
+
+main {
+    overflow-y: scroll;
+    width: 100%;
+    height: calc(100% - 160px);
+    padding-top: 26px;
+    box-sizing: border-box;
+}
+
+main .mensagem {
+    word-wrap: break-word;
+    border-radius: 2px;
+    margin-bottom: 4px;
+    background-color: #FFFFFF;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 10px 8px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    word-break: break-all;
+}
+
+
+main .status {
+    background-color: #DCDCDC;
+}
+
+main .reservada {
+    background-color: #FFDEDE;
+}
+
+main .mensagem .horario {
+    margin-right: 5px;
+    font-weight: 400;
+    color: #AAAAAA;
+}
+
+
+main .mensagem .pessoa {
+    font-weight: 700;
+}
+
+footer {
+    height: 80px;
+    width: 100%;
+    background-color: #FFFFFF;
+    padding: 0 18px;
+    box-sizing: border-box;
+}
+
+footer form {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+footer input {
+    width: 100%;
+    margin-right: 20px;
+    border: none;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 21px;
+}
+
+footer button {
+    background-color: #FFFFFF;
+    border: none;
+}
+
+footer button:hover {
+    cursor: pointer;
+}
+
+footer ::placeholder {
+    font-style: italic;
+    size: 18px;
+    color: #000000;
+}
+
+footer input:focus {
+    outline: none;
+}
